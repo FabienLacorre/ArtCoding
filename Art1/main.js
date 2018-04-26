@@ -2,18 +2,24 @@ var attractor = [];
 var l = [];
 var nLine = 50;
 
+
 function setup() {
 	createCanvas(600, 600);
 	frameRate(60);
 	colorMode(HSB); 
 	strokeWeight(1.5);
 	noFill();
+	for (var i = 0; i < nLine; i++) {
+		l.push(new Line(5 + 10 * i, 255));
+	}
+	//console.log(l[i].display);
 }
 
 function draw() {
-	var particle = new Particle(10, 20);
-	var line = new Line(10, 255);
-	particle.interact(10, 10, 10);
+	//background(0);
+	for (var i = 0; i < nLine; i++) {
+		l[i].display();
+	}
 }
 
 function Particle(x, y) {
@@ -39,10 +45,7 @@ function Particle(x, y) {
 	};
 
 	this.update = function() {
-		if (random(1) > 0.97) {
-			var angle = random(-Math.PI, Math.PI);
-			this.acc.set(Math.cos(angle), Math.sin(angle), 0);
-		}
+		
 	};
 }
 
@@ -54,3 +57,12 @@ function Line(y, c) {
 		this.p.push(new Particle(2 + 5 * i, y));
 	}
 }
+
+Line.prototype.display = function() {
+	stroke(this.col);
+	beginShape();
+	for (var i = 0; i < this.p.length; i++) {
+		curveVertex(this.p[i].pos.x, this.p[i].pos.y);
+	}
+	endShape();
+};
