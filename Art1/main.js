@@ -1,23 +1,33 @@
-var attractor = [];
 var l = [];
 var nLine = 50;
 
-
 function setup() {
-	createCanvas(600, 600);
+	createCanvas(550, 550);
 	frameRate(60);
 	colorMode(HSB); 
 	strokeWeight(1.5);
+	var c1 = random(255);
+	var c2 = random(255);
 	noFill();
 	for (var i = 0; i < nLine; i++) {
-		l.push(new Line(5 + 10 * i, 255));
+		var col = lerp(c1, c2, float(i) / nLine);
+		l.push(new Line(5 + 10 * i + 20, col));
 	}
-	//console.log(l[i].display);
 }
 
 function draw() {
-	//background(0);
+	background(0);
+	
 	for (var i = 0; i < nLine; i++) {
+		for (var j = 0; j < 100; j++) {
+			/*if (mouseX == l[i].p[j].pos.x || mouseY == l[i].p[j].pos.y) { */
+				if (random(1) > 0.5)
+					l[i].p[j].pos.y += 0.2;
+				else
+					l[i].p[j].pos.y -= 0.2;	
+			/*}*/
+			//l[i].p[j].pos.x = map();	
+		}
 		l[i].display();
 	}
 }
@@ -26,27 +36,6 @@ function Particle(x, y) {
 	this.pos = createVector(x, y, 0);
 	this.vel = createVector(0, 0, 0);
 	this.acc = createVector(0, 0, 0);
-
-	this.interact = function(r0, x, y) {
-		var sign = r0 / Math.abs(r0);
-		r0 = Math.abs(r0);
-
-		var r = dist(this.pos.x, this.pos.y, x, y);
-		var angle = Math.atan2(this.pos.y - y, this.pos.x - x);
-
-		if (r <= r0) {
-			var radius = 0.5 * sign * (r0 - r) / r0;
-			this.vel.set(radius * Math.cos(angle), radius * Math.sin(angle));
-		}
-		else {
-			this.vel.set(0, 0);
-		}
-		this.pos.add(this.vel);
-	};
-
-	this.update = function() {
-		
-	};
 }
 
 function Line(y, c) {
@@ -54,7 +43,7 @@ function Line(y, c) {
 	this.col = color(c, 100, 255);
 	this.nPoint = 100;
 	for (var i = 0; i < this.nPoint; i++) {
-		this.p.push(new Particle(2 + 5 * i, y));
+		this.p.push(new Particle(25 + 5 * i, y));
 	}
 }
 
@@ -65,4 +54,4 @@ Line.prototype.display = function() {
 		curveVertex(this.p[i].pos.x, this.p[i].pos.y);
 	}
 	endShape();
-};
+}
