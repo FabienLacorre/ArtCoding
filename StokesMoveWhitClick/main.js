@@ -15,21 +15,30 @@ function setup() {
 	}
 }
 
+
+
+
 function draw() {
 	background(0);
 	
 	for (var i = 0; i < nLine; i++) {
 		for (var j = 0; j < 100; j++) {
-			/*if (mouseX == l[i].p[j].pos.x || mouseY == l[i].p[j].pos.y) { */
-				if (random(1) > 0.5)
-					l[i].p[j].pos.y += 0.2;
-				else
-					l[i].p[j].pos.y -= 0.2;	
-			/*}*/
-			//l[i].p[j].pos.x = map();	
-		}
+			if (mouseIsPressed){
+				var x1 = mouseX - 20;
+				var x2 = mouseX + 20;
+				var y1 = mouseY - 20;
+				var y2 = mouseY + 20;
+				if (x1 < l[i].p[j].pos.x && 
+					x2 > l[i].p[j].pos.x && 
+					y1 < l[i].p[j].pos.y &&
+					y2 > l[i].p[j].pos.y) {
+					l[i].p[j].pos.y += 1
+				}
+			}
+  		}
 		l[i].display();
-	}
+	}			
+
 }
 
 function Particle(x, y) {
